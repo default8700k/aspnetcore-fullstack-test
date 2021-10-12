@@ -32,8 +32,25 @@ $(document).ready(function() {
 		}
 	});
 
+	let $dialogDebug = $('div[id="dialog-debug"]');
+	let $dialogDebugContent = $dialogDebug.find('div.modal-body');
+
 	let $btnCalculate = $('button[id="btn-calculate"]');
 	$btnCalculate.click(function() {
-		console.log('calculate');
+		let json = { 'values': [] };
+		$('input[id^="field"]').each(function() {
+			let value = $(this).val();
+			if (value !== '') {
+				json.values.push(parseInt(value));
+			}
+		});
+
+		$.get(`/api/main?json=${JSON.stringify(json)}`, function(result) {
+			$dialogDebugContent.text(`Результат: ${result}`);
+		}).fail(function(xhr) {
+			$dialogDebugContent.text(`Произошла ошибка. Код ошибки: ${xhr.status} [${xhr.responseText}]`);
+		}).always(function() {
+			$dialogDebug.modal('show');
+		});
 	});
 });
