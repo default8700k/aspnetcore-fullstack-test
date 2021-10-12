@@ -25,27 +25,34 @@ namespace WebApplication.Api
 		public IActionResult Main(String json)
 		{
 			var limits = new Limit(logger, configuration, "NumberLimits");
-
-			var data = JsonConvert.DeserializeAnonymousType(json, new { values = new List<Int32>() });
-			if (data.values.Count > limits.MaxCount)
+			try
 			{
-				logger.Log(LogLevel.Debug, "api:main values.length > limits.MaxCount");
-				return StatusCode(415, "count size error");
-			}
-
-			var result = 0;
-			foreach (var value in data.values)
-			{
-				if (value < limits.MinValue || value > limits.MaxValue)
+				var data = JsonConvert.DeserializeAnonymousType(json, new { values = new List<Int32>() });
+				if (data.values.Count > limits.MaxCount)
 				{
-					logger.Log(LogLevel.Debug, "api:main value < limits.MinValue || value > limits.MaxValue");
-					return StatusCode(415, "value size error");
+					logger.Log(LogLevel.Debug, "api:main values.length > limits.MaxCount");
+					return StatusCode(415, "count size error");
 				}
 
-				result += (Int32)Math.Pow(value, 2);
-			}
+				var result = 0;
+				foreach (var value in data.values)
+				{
+					if (value < limits.MinValue || value > limits.MaxValue)
+					{
+						logger.Log(LogLevel.Debug, "api:main value < limits.MinValue || value > limits.MaxValue");
+						return StatusCode(415, "value size error");
+					}
 
-			return new ObjectResult(result);
+					result += (Int32)Math.Pow(value, 2);
+				}
+
+				return new ObjectResult(result);
+			}
+			catch (Exception exception)
+			{
+				logger.Log(LogLevel.Error, "{0}", exception.Message);
+				return StatusCode(400, "wrong data format");
+			}
 		}
 	}
 }
