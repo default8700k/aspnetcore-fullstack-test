@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta name="robots" content="noindex, nofollow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="utf-8" />
+
+	<link rel="icon" type="image/png" href="/logo.png" asp-append-version="true" />
+
+	<link rel="stylesheet" type="text/css" href="/lib/bootstrap/bootstrap.min.css" asp-append-version="true" />
+	<link rel="stylesheet" type="text/css" href="/css/fonts.css" asp-append-version="true" />
+	<link rel="stylesheet" type="text/css" href="/css/styles.css" asp-append-version="true" />
+
+	<script type="text/javascript" src="/lib/jquery/jquery.min.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="/lib/bootstrap/bootstrap.min.js" asp-append-version="true"></script>
+	<script type="text/javascript" src="/scripts/scripts.js" asp-append-version="true"></script>
+
+	<title>aspnetcore-fullstack-test (c) Maltsev Victor</title>
+</head>
+<body class="bg-light">
+	<div class="container-xl p-3 p-md-4 p-lg-5">
+		<h1 class="text-center mb-md-3 mb-lg-4">aspnetcore-fullstack-test (c) Maltsev Victor</h1>
+		<p class="lead">Задание разбито на несколько уровней. Можно остановиться на любом из уровней и не выполнять все задание целиком. Конечно, чем больше уровней сделано, тем лучше. Но главным является качество кода. Желательно исходники загрузить на публичную систему контроля версий (например, github.com) с развернутой системой коммитов. Плюсом будет наличие unit-тестов. Для реализации тестового задания использовать .NET 5.0.</p>
+		<hr class="my-3 my-md-4" />
+		<div class="row">
+			<div class="col-md-6 order-1 order-md-0">
+				<h5>Вычисление результата</h5>
+				<div class="row" id="fields"></div>
+				<div class="d-flex flex-column flex-sm-row flex-md-column flex-lg-row justify-content-between">
+					<button class="btn btn-primary order-1 order-sm-0 order-md-1 order-lg-0" type="button" id="btn-calculate">Получить результат</button>
+					<div class="order-0 order-sm-1 order-md-0 order-lg-1 mb-3">
+						<button class="btn btn-sm btn-outline-primary" type="button" id="btn-field-add">Добавить поле</button>
+						<button class="btn btn-sm btn-outline-danger" type="button" id="btn-field-remove">Удалить поле</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 order-0 order-md-1">
+				<h5 class="d-sm-flex justify-content-between align-items-start">Уровень 1. Базовый. <span class="badge bg-secondary">Ожидание</span></h5>
+				<p class="mb-2">Реализовать REST веб-сервис по расчету сумм квадратов чисел переданной последовательности (x<sub>1</sub>, x<sub>2</sub>, ..., x<sub>n</sub>) => (x<sub>1</sub><sup>2</sup> + x<sub>2</sub><sup>2</sup> + ... + x<sub>n</sub><sup>2</sup>). Максимальное количество аргументов n задаются в конфигурационном файле веб-сервиса.</p>
+				<p class="mb-2">Если количество таких аргументов или значение одного из них превосходят установленное ограничение, то веб-сервис отвечает ошибкой ввода данных.</p>
+				<p class="mb-2">Для передачи входящих и исходящих данных используется формат json. Входящая последовательность передается как массив.</p>
+				<hr class="my-3 my-md-4" />
+				<h5 class="d-sm-flex justify-content-between align-items-start">Уровень 2. Добавление ожидания. <span class="badge bg-secondary">Ожидание</span></h5>
+				<p class="mb-2">Операция расчета квадрата числа (x<sub>i</sub><sup>2</sup>) становится «ресурсозатратной» и занимает некоторое время. В программном коде это эмулируется ожиданием случайного промежутка времени, минимальные и максимальные границы которого также задаются в конфигурации веб-сервиса.</p>
+				<hr class="my-3 my-md-4" />
+				<h5 class="d-sm-flex justify-content-between align-items-start">Уровень 3. Кэширование. <span class="badge bg-secondary">Ожидание</span></h5>
+				<p class="mb-2">Для ускорения работы сервиса результаты операции вычисления квадрата числа (x<sub>i</sub><sup>2</sup>) кэшируются.</p>
+				<hr class="my-3 my-md-4" />
+				<h5 class="d-sm-flex justify-content-between align-items-start">Уровень 4. Сайт. <span class="badge bg-primary">Выполнено</span></h5>
+				<p>Разработать веб-сайт (использовать bootstrap, адаптивный дизайн) клиента веб-сервиса реализованного ранее. Сайт состоит из единственной страницы, содержит поля для ввода данных, кнопку выполнить и поле вывода результата. Вычисление и вывод результата должны проходить без перезагрузки страницы.</p>
+				<hr class="my-3 my-md-4" />
+				<h5 class="d-sm-flex justify-content-between align-items-start">Уровень 5. История на сайте. <span class="badge bg-secondary">Ожидание</span></h5>
+				<p class="mb-2">Показывать на странице историю полученных результатов (можно без сохранения, т.е. перезагрузка страницы очищает историю).</p>
+				<hr class="d-md-none my-3" />
+			</div>
+		</div>
+	</div>
+	<template id="field">
+		<div class="mb-3 col-3 col-sm-2 col-md-3 col-lg-2">
+			<label class="form-label" for="field-$.id">x<sub>$.id</sub></label>
+			<input class="form-control" type="text" id="field-$.id" />
+		</div>
+	</template>
+</body>
+</html>
