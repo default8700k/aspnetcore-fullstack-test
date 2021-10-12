@@ -35,6 +35,9 @@ $(document).ready(function() {
 	let $dialogDebug = $('div[id="dialog-debug"]');
 	let $dialogDebugContent = $dialogDebug.find('div.modal-body');
 
+	let $containerResults = $('ul[id="results"]');
+	let $templateResult = $('template[id="result"]');
+
 	let $btnCalculate = $('button[id="btn-calculate"]');
 	$btnCalculate.click(function() {
 		let json = { 'values': [] };
@@ -45,12 +48,29 @@ $(document).ready(function() {
 			}
 		});
 
+		let content = undefined;
 		$.get(`/api/main?json=${JSON.stringify(json)}`, function(result) {
-			$dialogDebugContent.text(`Результат: ${result}`);
+			content = `Результат: ${result}`;
 		}).fail(function(xhr) {
-			$dialogDebugContent.text(`Произошла ошибка. Код ошибки: ${xhr.status} [${xhr.responseText}]`);
+			content = `Произошла ошибка. Код ошибки: ${xhr.status} [${xhr.responseText}]`;
+			console.log(xhr);
 		}).always(function() {
+			let date = new Date();
+
+			let templateResult = $templateResult.html();
+			templateResult = templateResult.replaceAll('$.hh', date.getHours().toString().toFormatDate());
+			templateResult = templateResult.replaceAll('$.mm', date.getMinutes().toString().toFormatDate());
+			templateResult = templateResult.replaceAll('$.ss', date.getSeconds().toString().toFormatDate());
+
+			templateResult = templateResult.replaceAll('$.text', content);
+			$containerResults.prepend(templateResult);
+
+			$dialogDebugContent.text(content);
 			$dialogDebug.modal('show');
 		});
 	});
 });
+
+String.prototype.toFormatDate = function() {
+	return this < 10 ? '0' + this.toString() : this;
+};
